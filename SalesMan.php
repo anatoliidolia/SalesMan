@@ -4,6 +4,8 @@ declare(strict_types=1);
 class SalesMan
 {
     private const MAX_VALUE = 1024;
+    
+    private const MIN_VALUE = -1;
 
     /**
      * @var array|int[][]
@@ -81,7 +83,7 @@ class SalesMan
         $distances = $this->calculateDistance();
 
         // Find the district with the lowest max distance
-        $bestDistrict = -1;
+        $bestDistrict = self::MIN_VALUE;
         $minMaxDistance = self::MAX_VALUE;
 
         foreach ($distances as $district => $distanceData) {
@@ -109,7 +111,7 @@ class SalesMan
         $arrayCount = count($this->graphs);
 
         foreach ($buildingTypes as $building) {
-            $lastSeen = -1;
+            $lastSeen = self::MIN_VALUE;
 
             // from left to right
             for ($i = 0; $i < $arrayCount; $i++) {
@@ -117,17 +119,17 @@ class SalesMan
                     $lastSeen = $i;
                 }
 
-                $distances[$i][$building] = $lastSeen !== -1 ? $i - $lastSeen : self::MAX_VALUE + 1;
+                $distances[$i][$building] = $lastSeen !== self::MIN_VALUE ? $i - $lastSeen : self::MAX_VALUE + 1;
             }
 
             // from right to left
-            $lastSeen = -1;
+            $lastSeen = self::MIN_VALUE;
             for ($i = $arrayCount - 1; $i >= 0; $i--) {
                 if ($this->graphs[$i][$building]) {
                     $lastSeen = $i;
                 }
 
-                if ($lastSeen !== -1) {
+                if ($lastSeen !== self::MIN_VALUE) {
                     $distances[$i][$building] = min($distances[$i][$building], $lastSeen - $i);
                 }
             }
